@@ -558,7 +558,7 @@ LoadEncryptedFile("file_enc.lua", 20) -- Loads file_enc.lua using the key 20.
 
 ## CallGlobalFunctionFromState
 
-`CallGlobalFunctionFromState(string state_name, string global_function_name, ...)`
+`bool, ... CallGlobalFunctionFromState(string state_name, string global_function_name, ...)`
 
 Call global function from other state
 
@@ -569,7 +569,7 @@ Example:
 
 ## AddHook
 
-`AddHook(string hook_name, string key, function)`
+`void AddHook(string hook_name, string key, function)`
 
 Adds a hook with custom key
 
@@ -622,24 +622,24 @@ MakeRequest(URL, "POST",{["Content-Type"] = "application/json"}, DATA)
 
 ## ImVec2
 
-`ImVec2()`
+`ImVec2 ImVec2([float x][, float y])`
 
-
+Unknown usage.
 
 Example:
 ```lua
-
+-- Unknown usage
 ```
 
 ## ImVec4
 
-`ImVec4()`
+`ImVec4 ImVec4([float x][, float y][, float z][, float w])`
 
-
+Unknown usage.
 
 Example:
 ```lua
-
+-- Unknown usage
 ```
 
 ## Choice
