@@ -75,7 +75,9 @@ Format:
 `return_type Function(arguments)`
 
 `return_type` = Type of value returned by function. Void functions will not return a value.
+
 `Function` = Function name
+
 `arguments` = Arguments of function. If the argument is formatted as `[, type argument_name]`, the argument is optional. If there is an "OR" in an argument, that means it can be multiple types.
 
 ## Sleep
