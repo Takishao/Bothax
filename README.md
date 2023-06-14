@@ -356,8 +356,8 @@ Returns list of NetAvatar structs of all players in world.
 Example:
 ```lua
 -- Prints names of all players in the current world.
-for _, PLAYER in pairs(GetPlayerList()) do
-	print(PLAYER.name)
+for _, Player in pairs(GetPlayerList()) do
+	print(Player.name)
 end
 ```
 
@@ -382,8 +382,8 @@ Returns Tile struct of tile (x, y)
 
 Example:
 ```lua
-local TILE = GetTile(10, 10) -- Returns tile struct of tile at (10, 10)
-print(TILE.fg) -- Prints foreground item id of tile
+local tile = GetTile(10, 10) -- Returns tile struct of tile at (10, 10)
+print(tile.fg) -- Prints foreground item id of tile
 ```
 
 ## GetTiles
@@ -395,10 +395,10 @@ Returns list of all Tile structs in current world.
 Example:
 ```lua
 -- Finds coordinates (x, y) of tile by id in current world.
-local function FIND_TILE(id)
-	for _, TILE in pairs(GetTiles()) do
-		if TILE.id == id then
-			return TILE.x, TILE.y
+local function findTile(id)
+	for _, tile in pairs(GetTiles()) do
+		if tile.id == id then
+			return tile.x, tile.y
 		end
 	end
 end
