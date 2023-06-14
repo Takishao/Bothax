@@ -88,9 +88,7 @@ Sleep for X milliseconds
 
 Example:
 ```lua
-print('Hello World!')
-Sleep(1000) -- Wait 1 second
-print('Hello, person!')
+Sleep(1000) -- 1000 Ms > 1 Second
 ```
 
 ## LogToConsole
@@ -101,7 +99,7 @@ Display text in the Growtopia chat
 
 Example:
 ```lua
-LogToConsole('Hello World!') --Displays "Hello World" in the Growtopia chat
+LogToConsole("Hello World!") --Displays "Hello World" in the Growtopia System Chat
 ```
 ## SendPacket
 
@@ -111,8 +109,7 @@ Send a text packet to the server
 
 Example:
 ```lua
-local packet = "action|input|text|Hello World!"
-SendPacket(2, packet) -- Sends the message "Hello World!"
+SendPacket(2, "action|input\ntext|Hello World!") -- Sends the message "Hello World!"
 ```
 
 ## SendPacketRaw
@@ -124,12 +121,12 @@ Send [TankPacket](#TankPacket) to server/client. Flags is optional, default is 1
 Example:
 ```lua
 -- Places an item with the id at (x, y)
-local function Place(x, y, id)
+local function place(id, x, y)
 	pkt = {}
 	pkt.type = 3
 	pkt.value = id
-	pkt.px = x
-	pkt.py = y
+	pkt.px = math.floor(GetLocal().pos.x / 32 + x)
+    pkt.py = math.floor(GetLocal().pos.y / 32 + y)
 	pkt.x = GetLocal().pos.x
 	pkt.y = GetLocal().pos.y
 	SendPacketRaw(false, pkt)
@@ -145,12 +142,12 @@ Calls [VariantList](#VariantList) on client. Netid and delay are optional. Defau
 Example:
 ```lua
 -- Creates a warning dialog on the player's screen
-local function WARN(text)
+local function warn(text)
 	local packet = {}
 	packet[0] = "OnAddNotification"
 	packet[1] = "interface/atomic_button.rttex"
 	packet[2] = text
-	packet[3] = 'audio/hub_open.wav'
+	packet[3] = "audio/hub_open.wav"
 	packet[4] = 0
 	SendVariantList(packet)
 end
@@ -231,7 +228,7 @@ Returns list of InventoryItem structs. These can be accessed using InventoryItem
 Example:
 ```lua
 -- A function that will find the amount of an item by the id. If that item is not found, it will return 0.
-local function FIND_ITEM(id)
+local function findItem(id)
     for _, item in pairs(GetInventory()) do
         if item.id == id then
             return item.amount
@@ -249,8 +246,8 @@ Returns ItemInfo struct by ID or Name.
 
 Example:
 ```lua
-local ITEM_ID = GetItemInfo("dirt").id -- Returns Item ID of dirt
-local ITEM_NAME = GetItemInfo(5640).name -- Returns Item Name of the item with the ID 5640 (Magplant 5000 Remote)
+GetItemInfo("dirt").id -- Returns Item ID of dirt (Output: 2)
+GetItemInfo(5640).name -- Returns Item Name of the item with the ID 5640 (Magplant 5000 Remote)
 ```
 
 ## GetItemInfoList
@@ -276,10 +273,11 @@ Returns NetAvatar struct for the local player.
 
 Example:
 ```lua
-local PLAYER_NAME = GetLocal().name
-local NET_ID = GetLocal().netid
-local PLAYER_X = GetLocal().pos.x
-local PLAYER_Y = GetLocal().pos.y
+GetLocal() // Local Player
+GetLocal().name // Player Name
+GetLocal().netid // Player NetID
+GetLocal().pos.x // Position X of Player
+GetLocal().pos.y // Position Y of Player
 ```
 
 ## GetNPC
@@ -325,12 +323,11 @@ Returns full list of WorldObject structs. Can be indexed with Object ID.
 Example:
 ```lua
 -- Pathfinds to all objects in world
-local function TAKE()
+local function take(id)
 	for _, obj in pairs(GetObjectList()) do
-    	local x = math.floor(obj.pos.x / 32)
-    	local y = math.floor(obj.pos.y / 32)
-    	FindPath(x,y,100)
-    	Sleep(1000)
+		if obj.id == id then
+    		FindPath(math.floor(obj.pos.x / 32), math.floor(obj.pos.y / 32), 100)
+		end
 	end
 end
 ```
@@ -344,9 +341,9 @@ Returns NetAvatar struct of player by netid.
 Example:
 ```lua
 -- Returns player name from netid
-local function NETID_TO_NAME(netid)
-	local PLAYER = GetPlayer(netid)
-	return PLAYER.name
+local function transferName(netid)
+	Player = GetPlayer(netid)
+	return Player.name
 end
 ```
 
@@ -373,8 +370,8 @@ Returns local PlayerInfo
 Example:
 ```lua
 -- Returns player build and place range (if you want it for whatever reason)
-local PUNCH_RANGE = GetPlayerInfo().punchrange // 32
-local BUILD_RANGE = GetPlayerInfo().buildrange // 32 
+GetPlayerInfo().punchrange / 32
+GetPlayerInfo().buildrange / 32 
 ```
 
 ## GetTile
@@ -415,13 +412,13 @@ Returns world struct of current world
 
 Example:
 ```lua
-local WORLD = GetWorld()
-local WORLD_NAME = WORLD.name
-local WORLD_WIDTH = WORLD.width
-local WORLD_HEIGHT = WORLD.height
-local WORLD_TILECOUNT = WORLD.tilecount
-local WORLD_OBJECTCOUNT = WORLD.objectcount
-local WORLD_LASTOID = WORLD.lastoid
+World = GetWorld()
+World.name // Current World of Player
+World.width // World Width
+World.height // World Height
+World.tilecount // World Tile Counts
+World.objectcount // World Object Count
+World.lastoid // World Last Oid
 ```
 
 ## Hash32
@@ -520,7 +517,7 @@ Encrypts given text. Key is optional, default key = 0.
 
 Example:
 ```lua
-local ENCRYPTED_TEXT = Encrypt("Hello World!", 20) -- Encrypts "Hello World!" using the key 20.
+Encrypt("Hello World!", 20) -- Encrypts "Hello World!" using the key 20.
 ```
 
 ## LoadEncrypt
@@ -592,7 +589,7 @@ Removes hook with key from database
 
 Example:
 ```lua
-RemoveHook("variant") -- Removes hook with name "variant"
+RemoveHook("Hook") -- Removes hook with name "Hook"
 ```
 
 ## RemoveHooks
@@ -615,8 +612,8 @@ Makes an HTTP request using the given inputs. Method, options, post_fields, and 
 Example:
 ```lua
 -- Sends json data to a discord webhook.
-local URL = "DISCORD WEBHOOK URL"
-local DATA = [[JSON DATA HERE]]
+URL = "Discord Url"
+DATA = [[JSON Data]]
 MakeRequest(URL, "POST",{["Content-Type"] = "application/json"}, DATA)
 ```
 
@@ -672,11 +669,9 @@ Runs a function in a thread
 
 Example:
 ```lua
-local function hello()
-	print("Hello World!")
-end
-
-RunThread(hello) -- Runs "hello" function in a thread
+RunThread(function()
+	LogToConsole("Hello World!") -- Runs "Hello World!" function in a thread
+end)
 ```
 
 ## RunDelayed
@@ -687,11 +682,11 @@ Runs a function after delayMS milliseconds.
 
 Example:
 ```lua
-local function hello()
+local function taylorSwift()
 	print("Hello World!")
 end
 
-RunThread(hello, 5000) -- Runs "hello" function in a thread after 5 seconds (5000 milliseconds)
+RunThread(taylorSwift, 5000) -- Runs "taylorSwift" function in a thread after 5 seconds (5000 milliseconds)
 ```
 
 # Struct Examples
