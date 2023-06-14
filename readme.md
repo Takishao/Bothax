@@ -1,4 +1,4 @@
-## Functions
+# Functions
 * [Sleep](#Sleep)
 * [LogToConsole](#LogToConsole)
 * [SendPacket](#SendPacket)
