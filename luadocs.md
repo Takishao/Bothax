@@ -126,7 +126,7 @@ local function place(id, x, y)
 	pkt.type = 3
 	pkt.value = id
 	pkt.px = math.floor(GetLocal().pos.x / 32 + x)
-    pkt.py = math.floor(GetLocal().pos.y / 32 + y)
+        pkt.py = math.floor(GetLocal().pos.y / 32 + y)
 	pkt.x = GetLocal().pos.x
 	pkt.y = GetLocal().pos.y
 	SendPacketRaw(false, pkt)
